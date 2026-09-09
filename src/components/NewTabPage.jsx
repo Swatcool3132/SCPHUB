@@ -13,11 +13,18 @@ import {
   RefreshCw,
   Clock,
   Shield,
-  Layers
+  Layers,
+  Cloud,
+  KeyRound,
+  BookOpen,
+  Lock
 } from 'lucide-react';
 import { ScpAnimatedBackground } from './ScpAnimatedBackground';
 
 const DEFAULT_SHORTCUTS = [
+  { id: 'sc-cloud', title: 'Cloud Gaming (Roblox & Fortnite)', type: 'tab', target: 'cloudgaming', icon: 'cloud', color: 'from-blue-600 via-cyan-600 to-indigo-700' },
+  { id: 'sc-scpwiki', title: 'SCP Wiki (wikidot.com)', type: 'tab', target: 'scpwiki', icon: 'book', color: 'from-amber-600 via-orange-600 to-red-700' },
+  { id: 'sc-passwords', title: '3 Weekly Passwords', type: 'custom', target: 'passwords', icon: 'key', color: 'from-emerald-600 via-teal-600 to-cyan-700' },
   { id: 'sc-ai', title: 'AI Studio (Gemini & ChatGPT)', type: 'tab', target: 'ai', icon: 'sparkles', color: 'from-purple-600 via-indigo-600 to-sky-600' },
   { id: 'sc-arcade', title: 'Game Arcade', type: 'tab', target: 'arcade', icon: 'gamepad', color: 'from-sky-500 to-indigo-600' },
   { id: 'sc-proxy', title: 'DuckDuckGo Proxy', type: 'tab', target: 'proxy', icon: 'duck', color: 'from-amber-500 to-orange-600' },
@@ -32,7 +39,12 @@ export const NewTabPage = ({
   onNavigateTab,
   onOpenGame,
   onPerformSearch,
-  onOpenUrl
+  onOpenUrl,
+  currentUser,
+  onOpenAuth,
+  onOpenProfile,
+  onOpenPasswords,
+  onLockSite
 }) => {
   const [query, setQuery] = useState('');
   const [engine, setEngine] = useState('ddg'); // 'ddg' | 'google' | 'games'
@@ -199,6 +211,10 @@ export const NewTabPage = ({
   };
 
   const handleShortcutClick = (s) => {
+    if (s.target === 'passwords' && onOpenPasswords) {
+      onOpenPasswords();
+      return;
+    }
     if (s.type === 'tab') {
       onNavigateTab(s.target);
     } else if (s.type === 'game') {
@@ -215,11 +231,30 @@ export const NewTabPage = ({
 
       {/* Top Telemetry & Clearance Status */}
       <div className="relative z-10 w-full max-w-5xl flex items-center justify-between text-xs text-cyan-400/80 font-mono">
-        <div className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-cyan-500/30 shadow-[0_0_15px_rgba(0,229,255,0.15)]">
-          <Shield className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-          <span className="hidden sm:inline">CLEARANCE:</span>
-          <span className="font-bold text-cyan-300">LEVEL 4 // O5 RESTRICTED</span>
-        </div>
+        {currentUser ? (
+          <button
+            type="button"
+            onClick={onOpenProfile}
+            className="flex items-center gap-2 bg-black/60 hover:bg-black/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-cyan-500/30 hover:border-cyan-400 shadow-[0_0_15px_rgba(0,229,255,0.15)] transition cursor-pointer"
+            title="Click to view your Agent ID card and high scores"
+          >
+            <span className="text-sm leading-none">{currentUser.avatar?.icon || '🛡️'}</span>
+            <span className="hidden sm:inline font-bold text-cyan-400">AGENT:</span>
+            <span className="font-bold text-cyan-300">{currentUser.username}</span>
+            <span className="text-[10px] text-slate-400">({currentUser.clearance?.badge || 'Level 2'})</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={onOpenAuth}
+            className="flex items-center gap-2 bg-black/60 hover:bg-black/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-cyan-500/30 hover:border-cyan-400 shadow-[0_0_15px_rgba(0,229,255,0.15)] transition cursor-pointer text-cyan-300 hover:text-white"
+            title="Sign In / Create Account"
+          >
+            <Shield className="w-3.5 h-3.5 text-cyan-400" />
+            <span className="font-bold">SIGN IN</span>
+          </button>
+        )}
 
         <div className="flex items-center gap-3">
           <div className="bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-cyan-500/30 flex items-center gap-2">
@@ -236,6 +271,18 @@ export const NewTabPage = ({
           >
             <Layers className="w-4 h-4" />
           </button>
+
+          {onLockSite && (
+            <button
+              type="button"
+              onClick={onLockSite}
+              className="px-2.5 py-1.5 bg-black/60 hover:bg-black/90 backdrop-blur-md rounded-lg border border-amber-500/30 text-amber-300 hover:text-amber-200 transition cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+              title="Lock Site with Weekly Password Gate"
+            >
+              <Lock className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">LOCK SITE</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -485,6 +532,12 @@ export const NewTabPage = ({
                     <Gamepad2 className="w-4 h-4" />
                   ) : s.icon === 'sparkles' ? (
                     <Sparkles className="w-4 h-4 text-purple-200" />
+                  ) : s.icon === 'cloud' ? (
+                    <Cloud className="w-4 h-4 text-sky-200" />
+                  ) : s.icon === 'book' ? (
+                    <BookOpen className="w-4 h-4 text-amber-200" />
+                  ) : s.icon === 'key' ? (
+                    <KeyRound className="w-4 h-4 text-emerald-200" />
                   ) : (
                     s.icon
                   )}

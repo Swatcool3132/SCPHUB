@@ -1,6 +1,6 @@
 {
   "name": "SCPHub",
-  "description": "SCPHub - Massive archive of 1,000+ unblocked HTML5 games with sandboxed execution, stealth tab cloaking, and high-speed multi-engine proxy search (Bing, DuckDuckGo, Wikipedia & AI).",
+  "description": "SCPHub - Massive archive of 4,000+ unblocked HTML5 games with sandboxed execution, stealth tab cloaking, and high-speed multi-engine proxy search (Bing, DuckDuckGo, Wikipedia & AI).",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

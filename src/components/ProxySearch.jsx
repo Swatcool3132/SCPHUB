@@ -37,6 +37,15 @@ const ENGINES = [
     desc: 'Hybrid Bing + DuckDuckGo + Wikipedia (Fastest, zero rate limits)'
   },
   {
+    id: 'google',
+    name: 'Google Web',
+    shortName: 'Google',
+    icon: Globe,
+    color: 'text-blue-400',
+    bg: 'bg-blue-500/10 border-blue-500/30 text-blue-300',
+    desc: 'Google Web index via high-speed aggregator'
+  },
+  {
     id: 'bing',
     name: 'Bing Web',
     shortName: 'Bing',
@@ -93,7 +102,7 @@ const TOPIC_CHIPS = [
   { label: '💻 Coding', filter: 'tutorial docs' }
 ];
 
-export const ProxySearch = ({ onBackToArcade, initialQuery = '', onOpenAi }) => {
+export const ProxySearch = ({ onBackToArcade, initialQuery = '', onOpenAi, games = [], onPlayGame }) => {
   const [query, setQuery] = useState(initialQuery || 'minecraft');
   const [activeTab, setActiveTab] = useState('web'); // 'web' | 'images' | 'news' | 'embedded'
   const [selectedEngine, setSelectedEngine] = useState('auto');
@@ -108,6 +117,27 @@ export const ProxySearch = ({ onBackToArcade, initialQuery = '', onOpenAi }) => 
       return [];
     }
   });
+
+  // Matched Unblocked Vault Games
+  const matchedVaultGames = React.useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q || !Array.isArray(games) || games.length === 0) return [];
+    return games
+      .filter((g) => {
+        if (!g) return false;
+        const title = (g.title || '').toLowerCase();
+        const desc = (g.description || g.desc || '').toLowerCase();
+        const cat = (g.category || '').toLowerCase();
+        const tags = Array.isArray(g.tags) ? g.tags : [];
+        return (
+          title.includes(q) ||
+          desc.includes(q) ||
+          cat.includes(q) ||
+          tags.some((t) => typeof t === 'string' && t.toLowerCase().includes(q))
+        );
+      })
+      .slice(0, 6);
+  }, [query, games]);
 
   // Search Results States
   const [webResults, setWebResults] = useState([]);
@@ -209,9 +239,12 @@ export const ProxySearch = ({ onBackToArcade, initialQuery = '', onOpenAi }) => 
 
     try {
       if (targetTab === 'web') {
-        const res = await fetch(
+        let res = await fetch(
           `/api/search/web?q=${encodeURIComponent(q)}&engine=${encodeURIComponent(engine)}`
         );
+        if (!res.ok && engine !== 'auto') {
+          res = await fetch(`/api/search/web?q=${encodeURIComponent(q)}&engine=auto`);
+        }
         if (!res.ok) throw new Error('Search engine responded with an error');
         const data = await res.json();
         setWebResults(data.results || []);
@@ -230,7 +263,31 @@ export const ProxySearch = ({ onBackToArcade, initialQuery = '', onOpenAi }) => 
       }
     } catch (err) {
       console.error('Search error:', err);
-      setSearchError('Could not retrieve results from this engine. Try switching to Turbo Auto or Bing.');
+      // Emergency recovery: Provide direct unblocked stealth search cards
+      setWebResults([
+        {
+          title: `Search "${q}" on DuckDuckGo Privacy Engine`,
+          url: `https://duckduckgo.com/?q=${encodeURIComponent(q)}`,
+          snippet: `Open high-speed privacy search results for "${q}". Launch in unblocked reader or stealth view.`,
+          domain: 'duckduckgo.com',
+          favicon: 'https://duckduckgo.com/favicon.ico'
+        },
+        {
+          title: `Search "${q}" on Google Web`,
+          url: `https://www.google.com/search?q=${encodeURIComponent(q)}`,
+          snippet: `Browse comprehensive Google web search index for "${q}".`,
+          domain: 'google.com',
+          favicon: 'https://www.google.com/favicon.ico'
+        },
+        {
+          title: `Search "${q}" on Wikipedia`,
+          url: `https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(q)}`,
+          snippet: `Read encyclopedic articles and definitions for "${q}".`,
+          domain: 'en.wikipedia.org',
+          favicon: 'https://en.wikipedia.org/static/favicon/wikipedia.ico'
+        }
+      ]);
+      setSearchError(null);
     } finally {
       setIsLoading(false);
     }
@@ -552,6 +609,74 @@ export const ProxySearch = ({ onBackToArcade, initialQuery = '', onOpenAi }) => 
             >
               Clear
             </button>
+          </div>
+        )}
+
+        {/* Playable Vault Games Matching Query (Instant 1-click play) */}
+        {matchedVaultGames.length > 0 && activeTab === 'web' && (
+          <div className="rounded-2xl border border-sky-500/30 bg-gradient-to-br from-sky-950/40 via-slate-900 to-slate-900 p-4 sm:p-5 shadow-xl space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">🎮</span>
+                <h3 className="text-sm sm:text-base font-black text-white uppercase tracking-wider">
+                  Unblocked Vault Games for "{query}"
+                </h3>
+                <span className="text-[10px] bg-sky-500/20 text-sky-400 border border-sky-500/30 px-2 py-0.5 rounded-full font-bold">
+                  {matchedVaultGames.length} Found
+                </span>
+              </div>
+              {onBackToArcade && (
+                <button
+                  type="button"
+                  onClick={onBackToArcade}
+                  className="text-xs text-sky-400 hover:text-sky-300 font-bold transition flex items-center gap-1 cursor-pointer"
+                >
+                  <span>View All Games</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+              {matchedVaultGames.map((game) => (
+                <div
+                  key={game.id}
+                  className="flex items-center justify-between p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-sky-500/50 transition group"
+                >
+                  <div className="min-w-0 flex-1 mr-2">
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-black text-xs text-white truncate group-hover:text-sky-400 transition">
+                        {game.title}
+                      </span>
+                      <span className="text-[9px] px-1.5 py-0.2 bg-slate-800 text-slate-400 rounded font-mono shrink-0">
+                        {game.category || 'Arcade'}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-400 truncate mt-0.5">
+                      {game.desc || game.description || 'Instant unblocked HTML5 game'}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => onPlayGame ? onPlayGame(game, false) : onBackToArcade?.()}
+                      className="px-2.5 py-1.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs shadow transition cursor-pointer flex items-center gap-1"
+                    >
+                      <span>Play</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => onPlayGame ? onPlayGame(game, true) : onBackToArcade?.()}
+                      className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer"
+                      title="Open in new dedicated tab"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 

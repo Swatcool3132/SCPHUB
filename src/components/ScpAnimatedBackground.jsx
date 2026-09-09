@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { TypewriterText } from './TypewriterText';
 
 /**
  * ScpAnimatedBackground
@@ -144,8 +145,14 @@ export const ScpAnimatedBackground = ({ customBgUrl = null }) => {
           >
             {glitchText}
           </div>
-          <div className="mt-1 text-[10px] sm:text-xs font-mono tracking-widest text-cyan-400/60 uppercase">
-            SECURE • CONTAIN • PROTECT
+          <div className="mt-1 flex justify-center text-[10px] sm:text-xs font-mono tracking-widest text-cyan-400/80 uppercase">
+            <TypewriterText
+              text="SECURE • CONTAIN • PROTECT"
+              typingSpeed={95}
+              deletingSpeed={40}
+              pauseTime={4000}
+              cursorClassName="text-cyan-400 drop-shadow-[0_0_8px_rgba(0,229,255,0.9)]"
+            />
           </div>
         </div>
       </div>

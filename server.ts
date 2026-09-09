@@ -396,8 +396,15 @@ async function startServer() {
       } else if (engine === 'ddg') {
         results = await searchDuckDuckGo(q);
         if (results.length === 0) {
-          // Automatic recovery if DDG returns 202
+          // Automatic recovery if DDG returns 202 or rate limits
           results = await searchBing(q);
+        }
+      } else if (engine === 'google') {
+        // High-speed Google Web Aggregator
+        results = await searchBing(q);
+        if (results.length < 4) {
+          const ddgRes = await searchDuckDuckGo(q);
+          results = [...results, ...ddgRes];
         }
       } else if (engine === 'wiki') {
         results = await searchWikipedia(q);
@@ -443,6 +450,33 @@ async function startServer() {
         }
       }
 
+      // If all external scrapers returned empty, provide guaranteed smart launcher results
+      if (results.length === 0) {
+        results = [
+          {
+            title: `Search "${q}" on DuckDuckGo Privacy Engine`,
+            url: `https://duckduckgo.com/?q=${encodeURIComponent(q)}`,
+            snippet: `Launch direct stealth search on DuckDuckGo for "${q}". Open in Stealth Tab or Clean Reader.`,
+            domain: 'duckduckgo.com',
+            favicon: 'https://duckduckgo.com/favicon.ico'
+          },
+          {
+            title: `Search "${q}" on Google Web`,
+            url: `https://www.google.com/search?q=${encodeURIComponent(q)}`,
+            snippet: `Direct Google web search index for "${q}". Access through unblocked proxy reader.`,
+            domain: 'google.com',
+            favicon: 'https://www.google.com/favicon.ico'
+          },
+          {
+            title: `Search "${q}" on Wikipedia Knowledge Base`,
+            url: `https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(q)}`,
+            snippet: `Find encyclopedic articles, definitions, and facts about "${q}".`,
+            domain: 'en.wikipedia.org',
+            favicon: 'https://en.wikipedia.org/static/favicon/wikipedia.ico'
+          }
+        ];
+      }
+
       return res.json({
         query: q,
         engine,
@@ -452,7 +486,30 @@ async function startServer() {
       });
     } catch (error) {
       console.error('Web search error:', error);
-      return res.status(500).json({ error: 'Search failed', results: [] });
+      const fallbackQuery = typeof req.query.q === 'string' ? req.query.q.trim() : '';
+      return res.json({
+        query: fallbackQuery,
+        engine: 'auto',
+        results: [
+          {
+            title: `Search "${fallbackQuery}" on DuckDuckGo`,
+            url: `https://duckduckgo.com/?q=${encodeURIComponent(fallbackQuery)}`,
+            snippet: `Instant privacy web search for "${fallbackQuery}". Click to launch in cloaked stealth tab.`,
+            domain: 'duckduckgo.com',
+            favicon: 'https://duckduckgo.com/favicon.ico'
+          },
+          {
+            title: `Search "${fallbackQuery}" on Google`,
+            url: `https://www.google.com/search?q=${encodeURIComponent(fallbackQuery)}`,
+            snippet: `Comprehensive web search for "${fallbackQuery}".`,
+            domain: 'google.com',
+            favicon: 'https://www.google.com/favicon.ico'
+          }
+        ],
+        knowledgeCard: null,
+        aiSummary: null,
+        recovered: true
+      });
     }
   };
 
@@ -1062,6 +1119,32 @@ async function startServer() {
       res.status(500).send('<h3>Failed to load DuckDuckGo proxy</h3>');
     }
   });
+
+  // Explicit route for 1-file standalone HTML for Mimo.org
+  app.get('/mimo.html', (_req, res) => {
+    const filePath = path.join(process.cwd(), 'public', 'mimo.html');
+    res.sendFile(filePath);
+  });
+
+  // Alias for /mimo -> /mimo.html
+  app.get('/mimo', (_req, res) => {
+    res.redirect('/mimo.html');
+  });
+
+  // Explicit route for script.js for Mimo.org
+  app.get('/script.js', (_req, res) => {
+    const filePath = path.join(process.cwd(), 'public', 'script.js');
+    res.type('application/javascript').sendFile(filePath);
+  });
+
+  // Explicit route for games.json
+  app.get('/games.json', (_req, res) => {
+    const filePath = path.join(process.cwd(), 'public', 'games.json');
+    res.type('application/json').sendFile(filePath);
+  });
+
+  // Serve static assets from public folder
+  app.use(express.static(path.join(process.cwd(), 'public')));
 
   // Vite middleware for development vs static production serving
   if (process.env.NODE_ENV !== 'production') {

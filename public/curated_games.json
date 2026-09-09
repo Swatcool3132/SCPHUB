@@ -1,0 +1,560 @@
+[
+  {
+    "id": "slope",
+    "title": "Slope",
+    "category": "Arcade",
+    "desc": "The ultimate 3D neon downhill speed test! Roll your sphere down an endless, procedurally generated neon course...",
+    "url": "https://db.duckmath.org/html/slope/index.html",
+    "badge": "Top School Classic",
+    "tag": "3D"
+  },
+  {
+    "id": "retro-bowl",
+    "title": "Retro Bowl",
+    "category": "Sports",
+    "desc": "The undisputed king of 8-bit football games! Manage your roster, draft future Hall of Famers, maintain locker ...",
+    "url": "https://db.duckmath.org/html/retro_bowl/index.html",
+    "badge": "Gridiron Legend",
+    "tag": "Sports"
+  },
+  {
+    "id": "1v1-lol",
+    "title": "1v1.LOL",
+    "category": "Action",
+    "desc": "Fast-paced competitive 3D building and shooting simulator! Practice your edit speed, ramp rushes, wall replace...",
+    "url": "https://db.duckmath.org/html/1v1lol/index.html",
+    "badge": "Building Shooter",
+    "tag": "Action"
+  },
+  {
+    "id": "cookie-clicker",
+    "title": "Cookie Clicker",
+    "category": "Idle",
+    "desc": "The timeless incremental clicker masterpiece! Bake cookies by the trillions, hire grandmas, construct automate...",
+    "url": "https://db.duckmath.org/html/cookie_clicker/index.html",
+    "badge": "Infinite Clicker",
+    "tag": "Idle"
+  },
+  {
+    "id": "fnaf-1",
+    "title": "Five Nights at Freddy's (FNAF 1)",
+    "category": "Horror",
+    "desc": "Welcome to Freddy Fazbear's Pizza! Survive your night shift as the night security guard from 12 AM to 6 AM. Mo...",
+    "url": "https://db.duckmath.org/html/fnaf/index.html",
+    "badge": "Survival Horror",
+    "tag": "Horror"
+  },
+  {
+    "id": "geometry-dash-scratch",
+    "title": "Geometry Dash Scratch",
+    "category": "Casual",
+    "desc": "Jump into a fast geometry game full of color and action. Guide your shape avoid spikes and time every jump per...",
+    "url": "https://db2.duckmath.org/2025/scratch/geometry-dash-scratch/pre.html",
+    "badge": "School Unblocked",
+    "tag": "Casual"
+  },
+  {
+    "id": "drift-hunters",
+    "title": "Drift Hunters",
+    "category": "Driving",
+    "desc": "The premier 3D browser drift simulator! Choose from 25+ iconic JDM and European drift cars, customize turbos, ...",
+    "url": "https://db2.duckmath.org/2023/unity3/drift-hunters/pre.html",
+    "badge": "Realistic Drift Sim",
+    "tag": "Driving"
+  },
+  {
+    "id": "bitlife",
+    "title": "BitLife",
+    "category": "Puzzle",
+    "desc": "Text-based life simulation sandbox where every choice shapes your destiny! Will you graduate from medical scho...",
+    "url": "https://db.duckmath.org/html/bitlife/index.html",
+    "badge": "Life Simulator",
+    "tag": "Simulation"
+  },
+  {
+    "id": "basket-random",
+    "title": "Basket Random",
+    "category": "Sports",
+    "desc": "Two-player ragdoll basketball madness! Hilarious one-button physics where your hoopers bounce, kick, flip, and...",
+    "url": "https://db.duckmath.org/html/basket_random/index.html",
+    "badge": "Ragdoll Hoops",
+    "tag": "Sports"
+  },
+  {
+    "id": "soccer-random",
+    "title": "Soccer Random",
+    "category": "Sports",
+    "desc": "Hilarious ragdoll soccer showdown! Score 5 goals before your rival on snowy pitches, sandy beaches, bouncing v...",
+    "url": "https://db.duckmath.org/html/soccer_random/index.html",
+    "badge": "Chaotic Football",
+    "tag": "Sports"
+  },
+  {
+    "id": "boxing-random",
+    "title": "Boxing Random",
+    "category": "Sports",
+    "desc": "Step into the squared circle for unpredictable ragdoll boxing! Throw haymakers, dodge headbutts, take advantag...",
+    "url": "https://db.duckmath.org/html/boxing_random/index.html",
+    "badge": "Knockout Brawl",
+    "tag": "Sports"
+  },
+  {
+    "id": "volley-random",
+    "title": "Volley Random",
+    "category": "Sports",
+    "desc": "Wild ragdoll volleyball where anything can happen! Spike over the net, dive across unpredictable courts, and a...",
+    "url": "https://db.duckmath.org/html/volley_random/index.html",
+    "badge": "Ragdoll Spikes",
+    "tag": "Sports"
+  },
+  {
+    "id": "moto-x3m",
+    "title": "Moto X3M",
+    "category": "Arcade",
+    "desc": "The gold standard of stunt bike trials! Race your dirt bike across 25+ perilous levels filled with massive loo...",
+    "url": "https://db.duckmath.org/html/motox3m/index.html",
+    "badge": "Stunt Bike Trials",
+    "tag": "Sports"
+  },
+  {
+    "id": "smash-karts",
+    "title": "Smash Karts",
+    "category": "Driving",
+    "desc": "Fast 3D multiplayer kart battle arena! Drive high-speed go-karts, pick up mystery weapon boxes, and blast othe...",
+    "url": "https://db.duckmath.org/html/smash_karts/index.html",
+    "badge": "Kart Battle Arena",
+    "tag": "Driving"
+  },
+  {
+    "id": "rooftop-snipers",
+    "title": "Rooftop Snipers",
+    "category": "Action",
+    "desc": "Two snipers on slippery rooftops with hilarious two-button physics! Jump and shoot to blast your opponent off ...",
+    "url": "https://db.duckmath.org/html/rooftop_snipers/index.html",
+    "badge": "Rooftop Duel",
+    "tag": "Action"
+  },
+  {
+    "id": "crossy-road",
+    "title": "Crossy Road",
+    "category": "Arcade",
+    "desc": "Why did the chicken cross the road? Hop across endless busy highways, raging river log flumes, and speeding tr...",
+    "url": "https://db.duckmath.org/html/crossy_road/index.html",
+    "badge": "Voxel Hopper",
+    "tag": "Arcade"
+  },
+  {
+    "id": "happy-wheels",
+    "title": "Happy Wheels",
+    "category": "Arcade",
+    "desc": "The world-famous ragdoll physics obstacle game! Navigate motorized wheelchairs, Segways, and bicycles through ...",
+    "url": "https://db.duckmath.org/html/happy_wheels/index.html",
+    "badge": "Ragdoll Classic",
+    "tag": "Arcade"
+  },
+  {
+    "id": "snow-rider-3d",
+    "title": "Snow Rider 3D",
+    "category": "Action",
+    "desc": "Race your sled down steep snowy mountains at breakneck speeds in full 3D! Dodge giant pine trees, tumbling bou...",
+    "url": "https://db.duckmath.org/html/snow_rider_3d/index.html",
+    "badge": "3D Sledding",
+    "tag": "3D"
+  },
+  {
+    "id": "stickman-hook",
+    "title": "Stickman Hook",
+    "category": "Arcade",
+    "desc": "Swing like Spider-Man through colorful, bouncy obstacle courses! Hook onto grappling pegs, build elastic kinet...",
+    "url": "https://db.duckmath.org/html/stickman_hook/index.html",
+    "badge": "Grapple Swing",
+    "tag": "Arcade"
+  },
+  {
+    "id": "eggy-car",
+    "title": "Eggy Car",
+    "category": "Driving",
+    "desc": "Drive as far as possible over steep hills and valleys with a fragile egg sitting on top of your car! Collect c...",
+    "url": "https://db.duckmath.org/html/eggy_car/index.html",
+    "badge": "Balance Driving",
+    "tag": "Driving"
+  },
+  {
+    "id": "doodle-jump",
+    "title": "Doodle Jump",
+    "category": "Arcade",
+    "desc": "The timeless vertical platformer! Guide the adorable Doodler upward on a piece of graph paper, leaping from pl...",
+    "url": "https://db.duckmath.org/html/doodle_jump/index.html",
+    "badge": "Retro Mobile Classic",
+    "tag": "Arcade"
+  },
+  {
+    "id": "minecraft",
+    "title": "Minecraft (Eaglercraft)",
+    "category": "RPG",
+    "desc": "Full Minecraft running seamlessly in your browser with WebAssembly! Mine resources, craft tools, build monumen...",
+    "url": "https://db.duckmath.org/html/minecraft/index.html",
+    "badge": "Full Web Edition",
+    "tag": "Sandbox"
+  },
+  {
+    "id": "run-3",
+    "title": "Run 3",
+    "category": "Arcade",
+    "desc": "Explore the vast galaxy in an endless rotating architectural tunnel! Hop from wall to ceiling, navigate around...",
+    "url": "https://db.duckmath.org/html/run3/index.html",
+    "badge": "Zero-G Runner",
+    "tag": "Arcade"
+  },
+  {
+    "id": "fnaf-2",
+    "title": "Five Nights at Freddy's 2",
+    "category": "Horror",
+    "desc": "No doors to protect you! In the grand reopening of Freddy Fazbear's Pizza, survive against both withered and n...",
+    "url": "https://db.duckmath.org/html/fnaf2/index.html",
+    "badge": "Terror Sequel",
+    "tag": "Horror"
+  },
+  {
+    "id": "fnaf-3",
+    "title": "Five Nights at Freddy's 3",
+    "category": "Horror",
+    "desc": "Thirty years after Freddy's closed, Fazbear's Fright: The Horror Attraction opens. Survive against Springtrap ...",
+    "url": "https://db.duckmath.org/html/fnaf3/index.html",
+    "badge": "Springtrap Horror",
+    "tag": "Horror"
+  },
+  {
+    "id": "drive-mad",
+    "title": "Drive Mad",
+    "category": "Driving",
+    "desc": "The viral physics-based monster truck trial! Navigate 100+ inventive obstacle tracks with giant wheels, expand...",
+    "url": "https://db.duckmath.org/html/drive_mad/index.html",
+    "badge": "Physics Truck Trial",
+    "tag": "Driving"
+  },
+  {
+    "id": "polytrack",
+    "title": "PolyTrack",
+    "category": "Driving",
+    "desc": "High-octane low-poly time-trial racing inspired by TrackMania! Race customizable open-wheel racers across craz...",
+    "url": "https://db.duckmath.org/html/polytrack/index.html",
+    "badge": "TrackMania Style",
+    "tag": "Driving"
+  },
+  {
+    "id": "cluster-rush",
+    "title": "Cluster Rush",
+    "category": "Action",
+    "desc": "Adrenaline-fueled first-person parkour! Sprint, jump, and climb across a chaotic highway convoy of runaway sem...",
+    "url": "https://db.duckmath.org/html/cluster_rush/index.html",
+    "badge": "First-Person Parkour",
+    "tag": "Action"
+  },
+  {
+    "id": "duck-life",
+    "title": "Duck Life",
+    "category": "RPG",
+    "desc": "Train your humble duckling into the world's fastest racing champion! Grind running, swimming, flying, and ener...",
+    "url": "https://db.duckmath.org/html/duck_life/index.html",
+    "badge": "Classic Training RPG",
+    "tag": "RPG"
+  },
+  {
+    "id": "temple-run-2",
+    "title": "Temple Run 2",
+    "category": "Arcade",
+    "desc": "Escape the cursed demon monkey in the legendary endless runner! Sprint along precarious cliff edges, zip-lines...",
+    "url": "https://db.duckmath.org/html/temple_run_2/index.html",
+    "badge": "Endless Runner",
+    "tag": "Arcade"
+  },
+  {
+    "id": "tanuki-sunset",
+    "title": "Tanuki Sunset",
+    "category": "Arcade",
+    "desc": "Cruising downhill on a skateboard as a stylish raccoon against breathtaking retro synthwave sunsets! Drift aro...",
+    "url": "https://db.duckmath.org/html/tanuki_sunset/index.html",
+    "badge": "Chill Synthwave Drift",
+    "tag": "Arcade"
+  },
+  {
+    "id": "flappy-bird",
+    "title": "Flappy Bird",
+    "category": "Arcade",
+    "desc": "The notoriously challenging retro tap flyer! Flap your tiny wings, carefully maintain altitude, and weave thro...",
+    "url": "https://db.duckmath.org/html/flappy_bird/index.html",
+    "badge": "Precision Flyer",
+    "tag": "Arcade"
+  },
+  {
+    "id": "2048",
+    "title": "2048",
+    "category": "Puzzle",
+    "desc": "The captivating mathematical tile puzzle! Slide numbered tiles on a 4x4 grid to merge identical numbers—2+2=4,...",
+    "url": "https://db.duckmath.org/html/2048/index.html",
+    "badge": "Math Puzzle",
+    "tag": "Puzzle"
+  },
+  {
+    "id": "ovo",
+    "title": "OvO",
+    "category": "Arcade",
+    "desc": "Electrifying precision stickman parkour platformer! Chain slides, wall jumps, dives, and ground pounds togethe...",
+    "url": "https://db.duckmath.org/html/ovo/index.html",
+    "badge": "Speedrun Parkour",
+    "tag": "Arcade"
+  },
+  {
+    "id": "ragdoll-archers",
+    "title": "Ragdoll Archers",
+    "category": "Action",
+    "desc": "Draw your bow, calculate ballistic arrow trajectories, and battle waves of enemy archers and armored knights w...",
+    "url": "https://db.duckmath.org/html/ragdoll_archers/index.html",
+    "badge": "Ballistic Archery",
+    "tag": "Action"
+  },
+  {
+    "id": "friday-night-funkin",
+    "title": "Friday Night Funkin'",
+    "category": "Arcade",
+    "desc": "The viral rhythm phenomenon! Match arrow keys to catchy beats in melodic rap battles against Daddy Dearest, Sk...",
+    "url": "https://db.duckmath.org/html/friday_night_funkin/index.html",
+    "badge": "Rhythm Phenomenon",
+    "tag": "Arcade"
+  },
+  {
+    "id": "btd5",
+    "title": "Bloons Tower Defense 5 (BTD5)",
+    "category": "Puzzle",
+    "desc": "The legendary tower defense classic! Strategically deploy Dart Monkeys, Super Monkeys, Ninja Monkeys, and Tack...",
+    "url": "https://db.duckmath.org/html/btd5/index.html",
+    "badge": "Tower Defense King",
+    "tag": "Strategy"
+  },
+  {
+    "id": "drift-boss",
+    "title": "Drift Boss",
+    "category": "Driving",
+    "desc": "One-touch 3D drifting on an endless suspended track! Time your drift turns with surgical precision to stay on ...",
+    "url": "https://db.duckmath.org/html/drift_boss/index.html",
+    "badge": "One-Touch Drift",
+    "tag": "Driving"
+  },
+  {
+    "id": "vex-8",
+    "title": "Vex 8",
+    "category": "Arcade",
+    "desc": "The latest installment in the iconic Vex platformer franchise! Master precision wall-jumps, grappling hooks, h...",
+    "url": "https://db.duckmath.org/html/vex_8/index.html",
+    "badge": "Hardcore Platformer",
+    "tag": "Arcade"
+  },
+  {
+    "id": "super-mario-64",
+    "title": "Super Mario 64",
+    "category": "RPG",
+    "desc": "The groundbreaking 3D platforming masterpiece completely ported to HTML5 WebGL! Jump through Princess Peach's ...",
+    "url": "https://db.duckmath.org/html/super_mario_64/index.html",
+    "badge": "Nintendo 64 Classic",
+    "tag": "3D"
+  },
+  {
+    "id": "madalin-stunt-cars-2",
+    "title": "Madalin Stunt Cars 2",
+    "category": "Driving",
+    "desc": "Open-world 3D supercar stunt playground! Drive hypercars—including the Bugatti Veyron, Lamborghini Aventador, ...",
+    "url": "https://db.duckmath.org/html/madalin_stunt_cars_2/index.html",
+    "badge": "Supercar Stunts",
+    "tag": "Driving"
+  },
+  {
+    "id": "golf-orbit",
+    "title": "Golf Orbit",
+    "category": "Sports",
+    "desc": "Launch your golf ball into outer space! Time your swing with pinpoint accuracy to hit 100% maximum power, boun...",
+    "url": "https://db.duckmath.org/html/golf_orbit/index.html",
+    "badge": "Space Golf",
+    "tag": "Sports"
+  },
+  {
+    "id": "escape-car",
+    "title": "Escape Car",
+    "category": "Driving",
+    "desc": "Outrun the pursuit in an adrenaline-pumping getaway! Drift around hairpins, weave through rush-hour traffic, a...",
+    "url": "https://db.duckmath.org/html/escape_car/index.html",
+    "badge": "Police Chase",
+    "tag": "Action"
+  },
+  {
+    "id": "deadly-descent",
+    "title": "Deadly Descent",
+    "category": "Sports",
+    "desc": "Hurtle down razor-sharp cliffs and treacherous alpine ridges at breakneck speeds! Master downhill mountain bik...",
+    "url": "https://db.duckmath.org/html/deadly_descent/index.html",
+    "badge": "Downhill BMX",
+    "tag": "3D"
+  },
+  {
+    "id": "baldis-basics",
+    "title": "Baldi's Basics in Education",
+    "category": "Horror",
+    "desc": "Enter Baldi's Schoolhouse to collect 7 lost notebooks! Solve math problems on the You Can Think Pad, outrun Ba...",
+    "url": "https://db2.duckmath.org/2026/more/baldis-basics/pre.html",
+    "badge": "90s Edutainment Horror",
+    "tag": "Horror"
+  },
+  {
+    "id": "basketball-legends",
+    "title": "Basketball Legends",
+    "category": "Sports",
+    "desc": "Step onto the hardwood with legendary cartoon NBA superstars! Perform devastating slam dunks, block three-poin...",
+    "url": "https://db2.duckmath.org/2002/basketball-legends/index.html",
+    "badge": "2-Player Hoops",
+    "tag": "Sports"
+  },
+  {
+    "id": "tap-tap-shots",
+    "title": "Tap Tap Shots",
+    "category": "Sports",
+    "desc": "The dangerously addictive basketball dunk challenge! Tap to keep the ball in the air and time your arc to sink...",
+    "url": "https://db2.duckmath.org/2023/q/1/tap-tap-shots/pre.html",
+    "badge": "Shot Clock Swish",
+    "tag": "Sports"
+  },
+  {
+    "id": "we-become-what-we-behold",
+    "title": "We Become What We Behold",
+    "category": "Puzzle",
+    "desc": "A profound 5-minute game about news cycles, social contagion, and sensationalism. Take photos of squares and c...",
+    "url": "https://db2.duckmath.org/2024/more/we-become-what-we-behold/pre.html",
+    "badge": "Social Satire",
+    "tag": "Indie"
+  },
+  {
+    "id": "sprunki",
+    "title": "Sprunki Incredibox",
+    "category": "Arcade",
+    "desc": "The viral musical interactive beatbox simulator! Drag and drop unique quirky musical beatboxers to craft infec...",
+    "url": "https://db2.duckmath.org/2024/more2/sprunki/pre.html",
+    "badge": "Musical Beatboxer",
+    "tag": "Music"
+  },
+  {
+    "id": "bus-subway-runner",
+    "title": "Subway Bus Runner",
+    "category": "Arcade",
+    "desc": "3D high-speed urban runner! Dash across train tracks, dodge oncoming buses and commuter trains, ride hoverboar...",
+    "url": "https://db2.duckmath.org/2022/unity/bus-subway-runner/pre.html",
+    "badge": "Subway Parkour",
+    "tag": "Arcade"
+  },
+  {
+    "id": "velocity-rush",
+    "title": "Velocity Rush",
+    "category": "Action",
+    "desc": "Fast-paced first-person parkour action game! Run along walls, slide under laser fences, execute grappling-hook...",
+    "url": "https://db2.duckmath.org/2026/unity/velocity-rush/pre.html",
+    "badge": "Parkour FPS",
+    "tag": "Action"
+  },
+  {
+    "id": "pokemon-emerald",
+    "title": "Pokemon Emerald",
+    "category": "RPG",
+    "desc": "The legendary Game Boy Advance RPG running completely in browser via WebAssembly! Explore the Hoenn region, ca...",
+    "url": "https://db2.duckmath.org/2026/em/pokemon-emerald/index.html",
+    "badge": "GBA Emulation",
+    "tag": "RPG"
+  },
+  {
+    "id": "pokemon-red",
+    "title": "Pokemon Red",
+    "category": "RPG",
+    "desc": "Where the worldwide phenomenon began! Journey through the Kanto region, challenge the Elite Four at the Indigo...",
+    "url": "https://db2.duckmath.org/2026/em/pokemon-red/index.html",
+    "badge": "Gen 1 Classic",
+    "tag": "RPG"
+  },
+  {
+    "id": "elastic-man",
+    "title": "Elastic Man",
+    "category": "Casual",
+    "desc": "Amazingly satisfying and hilarious facial physics simulator! Pinch, stretch, pull, and release an elastic face...",
+    "url": "https://db2.duckmath.org/2025/more/elastic-man/gm/pre.html",
+    "badge": "Satisfying Physics",
+    "tag": "Casual"
+  },
+  {
+    "id": "backflip-challenge",
+    "title": "Backflip Challenge",
+    "category": "Sports",
+    "desc": "Realistic ragdoll gymnastics and cliff jumping! Calculate your takeoff crouch, tuck into tight spins, and time...",
+    "url": "https://db2.duckmath.org/2026/unity/backflip-challenge/pre.html",
+    "badge": "Ragdoll Acrobatics",
+    "tag": "Sports"
+  },
+  {
+    "id": "steal-brainrots-multiplayer",
+    "title": "Steal Brainrots Multiplayer",
+    "category": "Action",
+    "desc": "Hilarious fast-paced multiplayer heist game! Infiltrate top-secret vaults, dodge security cameras and laser tr...",
+    "url": "https://db2.duckmath.org/2026/unity/steal-brainrots-multiplayer/pre.html",
+    "badge": "Multiplayer Heist",
+    "tag": "Action"
+  },
+  {
+    "id": "ducky-clicker",
+    "title": "Ducky Clicker",
+    "category": "Idle",
+    "desc": "Quack your way to rubber duck supremacy! Click the giant rubber duck, unlock duck ponds, hire duck scientists,...",
+    "url": "https://db2.duckmath.org/2026/more/ducky-clicker/pre.html",
+    "badge": "Quacking Clicker",
+    "tag": "Idle"
+  },
+  {
+    "id": "stickman-gta-city",
+    "title": "Stickman GTA City",
+    "category": "Action",
+    "desc": "Open-world 3D sandbox city action! Commandeer luxury supercars, pilot attack helicopters, complete gang missio...",
+    "url": "https://db2.duckmath.org/2024/unity3/stickman-gta-city/pre.html",
+    "badge": "Open World City",
+    "tag": "Action"
+  },
+  {
+    "id": "highway-traffic",
+    "title": "Highway Traffic",
+    "category": "Driving",
+    "desc": "High-speed lane splitting and near-miss thrills! Weave through dense rush hour highway traffic at 200 MPH, nar...",
+    "url": "https://db2.duckmath.org/2022/unity/highway-traffic/pre.html",
+    "badge": "Traffic Weaving",
+    "tag": "Driving"
+  },
+  {
+    "id": "eagle-craft",
+    "title": "Eagle Craft",
+    "category": "Adventure",
+    "desc": "Eagle Craft is an unblocked HTML5 game playable directly in your browser with no download or setup required....",
+    "url": "https://classroomlesson.github.io/basic-ruffle-player/html/minecraft/index.html",
+    "badge": "School Unblocked",
+    "tag": "Adventure"
+  },
+  {
+    "id": "native-snake",
+    "title": "Cyber Snake (100% Offline)",
+    "category": "Retro",
+    "desc": "Native canvas retro cyber snake. Runs 100% offline with zero network requests!",
+    "url": "native:snake",
+    "badge": "Native Offline",
+    "tag": "Arcade"
+  },
+  {
+    "id": "native-2048",
+    "title": "2048 Cyber Grid (100% Offline)",
+    "category": "Retro",
+    "desc": "Native sliding puzzle. Combine matching power tiles to reach the 2048 core!",
+    "url": "native:2048",
+    "badge": "Native Offline",
+    "tag": "Puzzle"
+  }
+]

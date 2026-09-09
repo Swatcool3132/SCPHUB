@@ -34,6 +34,11 @@ export const GamePlayer = ({
   const [stageHeight, setStageHeight] = useState('default'); // 'default' (620px), 'tall' (750px), 'cinematic' (850px)
   const [copied, setCopied] = useState(false);
   const [keySeed, setKeySeed] = useState(0);
+  const [useProxy, setUseProxy] = useState(false);
+
+  const activeUrl = useProxy
+    ? `/api/proxy/page?url=${encodeURIComponent(game.iframeUrl)}`
+    : game.iframeUrl;
 
   const handleReload = () => {
     if (iframeRef.current) {
@@ -203,10 +208,24 @@ export const GamePlayer = ({
             <span className="hidden md:inline">{isFullscreen ? 'Exit' : 'Fullscreen'}</span>
           </button>
 
+          {/* Proxy / Direct Mode Toggle */}
+          <button
+            onClick={() => setUseProxy((p) => !p)}
+            className={`h-9 px-3 rounded-md border text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition cursor-pointer ${
+              useProxy
+                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/60'
+                : 'bg-slate-900 text-slate-300 hover:text-white border-slate-700 hover:bg-slate-800'
+            }`}
+            title={useProxy ? 'Proxy active: strips CSP & filters. Click to switch to Direct mode.' : 'Click to route through Server Proxy (bypasses school firewalls & frame restrictions)'}
+          >
+            <Shield className={`w-3.5 h-3.5 ${useProxy ? 'text-emerald-400' : 'text-slate-400'}`} />
+            <span>{useProxy ? 'Proxied' : 'Proxy Mode'}</span>
+          </button>
+
           {/* Open in New Tab */}
           <button
             onClick={handleOpenNewTab}
-            className="h-9 px-3 rounded-md bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition flex items-center gap-1.5 text-xs font-bold uppercase"
+            className="h-9 px-3 rounded-md bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition flex items-center gap-1.5 text-xs font-bold uppercase cursor-pointer"
             title="Open Game in New Tab"
           >
             <ExternalLink className="w-3.5 h-3.5" />
@@ -216,7 +235,7 @@ export const GamePlayer = ({
           {/* About:Blank Stealth Cloak */}
           <button
             onClick={handleAboutBlankCloak}
-            className="h-9 px-3 rounded-md bg-indigo-950/80 hover:bg-indigo-900 text-indigo-300 border border-indigo-700/60 text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition shadow-sm"
+            className="h-9 px-3 rounded-md bg-indigo-950/80 hover:bg-indigo-900 text-indigo-300 border border-indigo-700/60 text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition shadow-sm cursor-pointer"
             title="Open in an about:blank stealth window (disguised from browser history)"
           >
             <Shield className="w-3.5 h-3.5 text-indigo-400" />
@@ -239,13 +258,13 @@ export const GamePlayer = ({
         }`}
       >
         <iframe
-          key={`${game.id}-${keySeed}`}
+          key={`${game.id}-${keySeed}-${useProxy}`}
           ref={iframeRef}
           data-testid="test_app_frame"
           id="test_app_frame"
           name="appFrame"
           scrolling="no"
-          src={game.iframeUrl}
+          src={activeUrl}
           title={game.title}
           className="w-full h-full border-0 outline-none"
           allowFullScreen

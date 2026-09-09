@@ -1,45 +1,75 @@
 // Auto-generated 800+ HTML5 Unblocked Game Vault
 export const CLOAK_PROFILES = [
   {
+    id: 'none',
+    name: 'Default (SCPHub)',
+    title: 'SCPHub Vault & Proxy Browser',
+    tabTitle: 'SCPHub Vault & Proxy Browser',
+    favicon: '/vite.svg',
+    iconUrl: '/vite.svg',
+    description: 'Restore default SCPHub title and icon'
+  },
+  {
+    id: 'google-classroom-home',
+    name: 'Google.classroom-Home',
+    title: 'Google Classroom - Home',
+    tabTitle: 'Classes - Google Classroom',
+    favicon: 'https://ssl.gstatic.com/classroom/favicon.png',
+    iconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+    description: 'Disguises tab as Google Classroom - Home with official classroom icon'
+  },
+  {
+    id: 'classroom',
+    name: 'Google Classroom',
+    title: 'Google Classroom - Home',
+    tabTitle: 'Google.classroom-Home',
+    favicon: 'https://ssl.gstatic.com/classroom/favicon.png',
+    iconUrl: 'https://ssl.gstatic.com/classroom/favicon.png',
+    description: 'Disguises tab as Google Classroom Home'
+  },
+  {
     id: 'gdocs',
     name: 'Google Docs',
+    title: 'Untitled document - Google Docs',
     tabTitle: 'Untitled document - Google Docs',
     favicon: 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico',
+    iconUrl: 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico',
     description: 'Looks like an active Google Docs essay or paper'
   },
   {
     id: 'gdrive',
     name: 'Google Drive',
+    title: 'My Drive - Google Drive',
     tabTitle: 'My Drive - Google Drive',
     favicon: 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png',
+    iconUrl: 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png',
     description: 'Disguises tab as your school Google Drive folder'
-  },
-  {
-    id: 'classroom',
-    name: 'Google Classroom',
-    tabTitle: 'Classes - Google Classroom',
-    favicon: 'https://ssl.gstatic.com/classroom/favicon.png',
-    description: 'Disguises tab as active Google Classroom assignments'
   },
   {
     id: 'canvas',
     name: 'Canvas LMS',
+    title: 'Dashboard - Canvas LMS',
     tabTitle: 'Dashboard - Canvas LMS',
     favicon: 'https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico',
+    iconUrl: 'https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico',
     description: 'Disguises tab as Canvas Student Dashboard'
   },
   {
     id: 'desmos',
     name: 'Desmos Graphing',
+    title: 'Desmos | Graphing Calculator',
     tabTitle: 'Desmos | Graphing Calculator',
     favicon: 'https://www.desmos.com/favicon.ico',
+    iconUrl: 'https://www.desmos.com/favicon.ico',
     description: 'Disguises tab as Desmos Math Calculator'
   },
   {
     id: 'khan',
     name: 'Khan Academy',
+    title: 'Khan Academy | Free Online Courses, Lessons & Practice',
     tabTitle: 'Khan Academy | Free Online Courses, Lessons & Practice',
     favicon: 'https://www.khanacademy.org/favicon.ico',
+    iconUrl: 'https://www.khanacademy.org/favicon.ico',
     description: 'Disguises tab as Khan Academy course session'
   }
 ];

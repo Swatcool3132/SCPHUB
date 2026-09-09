@@ -11,7 +11,15 @@ import { TacticalTickerBanner } from './components/TacticalTickerBanner';
 import { ScpLogo } from './components/ScpLogo';
 import { ProxySearch } from './components/ProxySearch';
 import { AiChat } from './components/AiChat';
+import { CloudGamingHub } from './components/CloudGamingHub';
+import { ScpWikiViewer } from './components/ScpWikiViewer';
+import { WeeklyPasswordsModal } from './components/WeeklyPasswordsModal';
+import { SiteAccessGate } from './components/SiteAccessGate';
+import { getWeekDetails } from './data/weeklyPasswords';
+import { AuthModal } from './components/AuthModal';
+import { UserProfileModal } from './components/UserProfileModal';
 import { INITIAL_GAMES, CLOAK_PROFILES } from './data/games';
+import { getActiveSession, logoutAccount, updateUserData, recordUserGamePlayed } from './data/auth';
 import {
   Sparkles,
   Clock,
@@ -23,6 +31,7 @@ import {
   Terminal,
   Lightbulb,
   CheckCircle2,
+  Lock,
   X
 } from 'lucide-react';
 
@@ -62,6 +71,37 @@ export default function App() {
   const [toastNotice, setToastNotice] = useState(null);
   const [visibleCount, setVisibleCount] = useState(48);
 
+  // Persistent Client-Side Auth State (Auto-sign in)
+  const [currentUser, setCurrentUser] = useState(() => getActiveSession());
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showPasswordsModal, setShowPasswordsModal] = useState(false);
+
+  // Weekly rotating site gatekeeper (No password needed for games, password needed to get on the site)
+  const [isSiteUnlocked, setIsSiteUnlocked] = useState(() => {
+    try {
+      const raw = localStorage.getItem('scphub_site_unlocked');
+      if (!raw) return false;
+      const parsed = JSON.parse(raw);
+      const { weekNo, year } = getWeekDetails();
+      return parsed.unlocked === true && parsed.weekNo === weekNo && parsed.year === year;
+    } catch {
+      return false;
+    }
+  });
+
+  const handleLockSite = () => {
+    localStorage.removeItem('scphub_site_unlocked');
+    setIsSiteUnlocked(false);
+  };
+
+  // When user is active or switches, sync user favorites
+  useEffect(() => {
+    if (currentUser?.favorites && currentUser.favorites.length > 0) {
+      setFavorites(currentUser.favorites);
+    }
+  }, [currentUser?.username]);
+
   // Load from /games.json and merge custom local storage games
   useEffect(() => {
     fetch('/games.json')
@@ -90,10 +130,16 @@ export default function App() {
       });
   }, []);
 
-  // Save favorites to localStorage
+  // Save favorites to localStorage and sync to currentUser profile if signed in
   useEffect(() => {
     localStorage.setItem('ub_favorites', JSON.stringify(favorites));
-  }, [favorites]);
+    if (currentUser?.username) {
+      updateUserData(currentUser.username, (u) => ({
+        ...u,
+        favorites
+      }));
+    }
+  }, [favorites, currentUser?.username]);
 
   // Save recents to localStorage
   useEffect(() => {
@@ -104,6 +150,32 @@ export default function App() {
     setFavorites((prev) =>
       prev.includes(gameId) ? prev.filter((id) => id !== gameId) : [...prev, gameId]
     );
+  };
+
+  const handleAuthSuccess = (user) => {
+    setCurrentUser(user);
+    if (user.favorites && user.favorites.length > 0) {
+      setFavorites(user.favorites);
+    }
+    setToastNotice({
+      type: 'success',
+      message: `Signed in as Agent ${user.username} (${user.clearance?.badge}). Same-device auto-login active!`
+    });
+  };
+
+  const handleSignOut = () => {
+    logoutAccount();
+    setCurrentUser(null);
+    setShowProfileModal(false);
+    setToastNotice({
+      type: 'info',
+      message: 'Signed out. Your profile remains saved for future logins.'
+    });
+  };
+
+  const handleSwitchAccount = () => {
+    setShowProfileModal(false);
+    setShowAuthModal(true);
   };
 
   // Auto-dismiss toast notice
@@ -210,7 +282,39 @@ export default function App() {
     }
   };
 
+  const handleOpenCloudGaming = () => {
+    const existing = tabs.find((t) => t.type === 'cloudgaming');
+    if (existing) {
+      setActiveTabId(existing.id);
+    } else {
+      const newTabId = 'tab-cloudgaming-' + Date.now();
+      setTabs((prev) => [
+        ...prev,
+        { id: newTabId, type: 'cloudgaming', title: 'Cloud Gaming (Roblox & Fortnite)', key: Date.now() }
+      ]);
+      setActiveTabId(newTabId);
+    }
+  };
+
+  const handleOpenScpWiki = (url = 'https://scp-wiki.wikidot.com/') => {
+    const existing = tabs.find((t) => t.type === 'scpwiki');
+    if (existing) {
+      setActiveTabId(existing.id);
+    } else {
+      const newTabId = 'tab-scpwiki-' + Date.now();
+      setTabs((prev) => [
+        ...prev,
+        { id: newTabId, type: 'scpwiki', title: 'SCP Foundation Wiki', url, key: Date.now() }
+      ]);
+      setActiveTabId(newTabId);
+    }
+  };
+
   const handleOpenUrl = (url) => {
+    if (url.includes('scp-wiki.wikidot.com')) {
+      handleOpenScpWiki(url);
+      return;
+    }
     let title = 'Web Page';
     try {
       title = new URL(url).hostname;
@@ -235,6 +339,18 @@ export default function App() {
         setTabs((prev) => [...prev, { id, type: 'arcade', title: 'Arcade', key: Date.now() }]);
         setActiveTabId(id);
       }
+    } else if (trimmed === 'scphub://cloudgaming' || trimmed.toLowerCase() === 'cloudgaming' || trimmed.toLowerCase() === 'cloud') {
+      handleOpenCloudGaming();
+    } else if (
+      trimmed === 'https://scp-wiki.wikidot.com/' ||
+      trimmed === 'https://scp-wiki.wikidot.com' ||
+      trimmed === 'scp-wiki.wikidot.com' ||
+      trimmed === 'scphub://scpwiki' ||
+      trimmed.toLowerCase() === 'scpwiki' ||
+      trimmed.includes('scp-wiki.wikidot.com')
+    ) {
+      const targetUrl = trimmed.startsWith('http') ? trimmed : `https://${trimmed}`;
+      handleOpenScpWiki(targetUrl);
     } else if (trimmed === 'scphub://proxy' || trimmed.startsWith('scphub://proxy')) {
       const urlParams = new URLSearchParams(trimmed.split('?')[1] || '');
       const q = urlParams.get('q') || '';
@@ -255,6 +371,10 @@ export default function App() {
       const filtered = prev.filter((id) => id !== game.id);
       return [game.id, ...filtered].slice(0, 10);
     });
+
+    if (currentUser?.username) {
+      recordUserGamePlayed(currentUser.username, game);
+    }
 
     if (openInNewTab) {
       const newTabId = 'tab-game-' + game.id + '-' + Date.now();
@@ -337,22 +457,31 @@ export default function App() {
 
   // Filter and sort games
   const filteredGames = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
     let result = games.filter((game) => {
-      const matchesSearch =
-        game.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        game.tags?.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        game.description.toLowerCase().includes(searchQuery.toLowerCase());
+      if (!game) return false;
+      const title = (game.title || '').toLowerCase();
+      const desc = (game.description || game.desc || '').toLowerCase();
+      const cat = (game.category || '').toLowerCase();
+      const tags = Array.isArray(game.tags) ? game.tags : [];
+
+      const matchesSearch = !q ||
+        title.includes(q) ||
+        desc.includes(q) ||
+        cat.includes(q) ||
+        tags.some((t) => typeof t === 'string' && t.toLowerCase().includes(q));
+
       const matchesCategory =
-        selectedCategory === 'All' || game.category === selectedCategory;
+        selectedCategory === 'All' || cat === selectedCategory.toLowerCase();
       const matchesFavorites = !showFavoritesOnly || favorites.includes(game.id);
 
       return matchesSearch && matchesCategory && matchesFavorites;
     });
 
     if (sortBy === 'rating') {
-      result.sort((a, b) => b.rating - a.rating);
+      result.sort((a, b) => (b.rating || 0) - (a.rating || 0));
     } else if (sortBy === 'title') {
-      result.sort((a, b) => a.title.localeCompare(b.title));
+      result.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
     }
 
     return result;
@@ -376,18 +505,31 @@ export default function App() {
   }, [recents, games]);
 
   const handleApplyCloak = (profileId) => {
-    const profile = CLOAK_PROFILES.find((p) => p.id === profileId);
+    const profile =
+      typeof profileId === 'object' && profileId !== null
+        ? profileId
+        : CLOAK_PROFILES.find((p) => p.id === profileId);
     if (!profile) return;
     setActiveCloak(profile.id);
-    document.title = profile.title;
+    document.title = profile.tabTitle || profile.title || 'Google Classroom - Home';
     let link = document.querySelector("link[rel~='icon']");
     if (!link) {
       link = document.createElement('link');
       link.rel = 'icon';
       document.getElementsByTagName('head')[0].appendChild(link);
     }
-    link.href = profile.iconUrl;
+    link.href = profile.id === 'none' ? '/vite.svg' : (profile.favicon || profile.iconUrl || 'https://ssl.gstatic.com/classroom/favicon.png');
   };
+
+  // Gatekeeper: Password required to get on the site (no game)
+  if (!isSiteUnlocked) {
+    return (
+      <SiteAccessGate
+        onUnlock={() => setIsSiteUnlocked(true)}
+        onApplyCloak={handleApplyCloak}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col selection:bg-sky-500/30 selection:text-white relative">
@@ -432,6 +574,7 @@ export default function App() {
         onNavigateUrl={handleNavigateUrl}
         activeCloak={activeCloak}
         setActiveCloak={handleApplyCloak}
+        onLockSite={handleLockSite}
       />
 
       {/* Main Content Area */}
@@ -444,8 +587,16 @@ export default function App() {
               <NewTabPage
                 key={activeTab.key || activeTab.id}
                 onNavigateTab={(target, opts) => {
-                  if (target === 'arcade') {
-                    if (opts?.searchQuery) setSearchQuery(opts.searchQuery);
+                  if (target === 'cloudgaming') {
+                    handleOpenCloudGaming();
+                  } else if (target === 'scpwiki') {
+                    handleOpenScpWiki();
+                  } else if (target === 'arcade') {
+                    if (opts?.searchQuery) {
+                      setSearchQuery(opts.searchQuery);
+                      setSelectedCategory('All');
+                      setShowFavoritesOnly(false);
+                    }
                     const arcade = tabs.find((t) => t.type === 'arcade');
                     if (arcade) setActiveTabId(arcade.id);
                     else {
@@ -473,6 +624,31 @@ export default function App() {
                 }}
                 onPerformSearch={handlePerformSearch}
                 onOpenUrl={handleOpenUrl}
+                currentUser={currentUser}
+                onOpenAuth={() => setShowAuthModal(true)}
+                onOpenProfile={() => setShowProfileModal(true)}
+                onOpenPasswords={() => setShowPasswordsModal(true)}
+                onLockSite={handleLockSite}
+              />
+            );
+          }
+
+          if (activeTab.type === 'cloudgaming') {
+            return (
+              <CloudGamingHub
+                key={activeTab.key || activeTab.id}
+                onOpenPasswords={() => setShowPasswordsModal(true)}
+                onApplyStealth={handleApplyCloak}
+              />
+            );
+          }
+
+          if (activeTab.type === 'scpwiki') {
+            return (
+              <ScpWikiViewer
+                key={activeTab.key || activeTab.id}
+                initialUrl={activeTab.url || 'https://scp-wiki.wikidot.com/'}
+                onApplyStealth={handleApplyCloak}
               />
             );
           }
@@ -483,6 +659,8 @@ export default function App() {
                 key={activeTab.key || activeTab.id}
                 initialQuery={activeTab.query || ''}
                 onOpenAi={handleOpenAi}
+                games={games}
+                onPlayGame={(game, inNewTab) => handlePlayGame(game, inNewTab)}
                 onBackToArcade={() => {
                   const arcade = tabs.find((t) => t.type === 'arcade');
                   if (arcade) setActiveTabId(arcade.id);
@@ -541,8 +719,37 @@ export default function App() {
                 setActiveCloak={setActiveCloak}
                 totalGames={games.length}
                 currentTab="arcade"
+                currentUser={currentUser}
+                onOpenAuth={() => setShowAuthModal(true)}
+                onOpenProfile={() => setShowProfileModal(true)}
+                onLockSite={handleLockSite}
+                onSearchSubmit={(term) => {
+                  const q = term?.trim();
+                  if (!q) return;
+                  // If matching game in current view, play it
+                  if (filteredGames.length > 0) {
+                    handlePlayGame(filteredGames[0], false);
+                    return;
+                  }
+                  // If matching game exists across all categories, reset filter & play
+                  const anywhere = games.find((g) =>
+                    (g.title || '').toLowerCase().includes(q.toLowerCase())
+                  );
+                  if (anywhere) {
+                    setSelectedCategory('All');
+                    setShowFavoritesOnly(false);
+                    handlePlayGame(anywhere, false);
+                    return;
+                  }
+                  // Otherwise send to proxy search
+                  handlePerformSearch(q);
+                }}
                 setCurrentTab={(t) => {
-                  if (t === 'proxy') {
+                  if (t === 'cloudgaming') {
+                    handleOpenCloudGaming();
+                  } else if (t === 'scpwiki') {
+                    handleOpenScpWiki();
+                  } else if (t === 'proxy') {
                     const proxy = tabs.find((x) => x.type === 'proxy');
                     if (proxy) setActiveTabId(proxy.id);
                     else {
@@ -554,6 +761,7 @@ export default function App() {
                     handleOpenAi();
                   }
                 }}
+                onOpenPasswords={() => setShowPasswordsModal(true)}
               />
               {activeGame ? (
                 <div className="flex-1 bg-slate-950/60 pb-12">
@@ -724,7 +932,7 @@ export default function App() {
                     </span>
                   </h1>
                   <p className="text-slate-400 text-xs font-medium">
-                    Verified 1,000+ browser titles • High-performance sandboxed execution • Securly unblocked
+                    Verified 4,000+ browser titles • High-performance sandboxed execution • Securly unblocked
                   </p>
                 </div>
 
@@ -842,24 +1050,44 @@ export default function App() {
                 </>
               ) : (
                 /* Empty state when filtering */
-                <div className="text-center py-16 px-4 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-3 max-w-lg mx-auto my-8">
+                <div className="text-center py-16 px-4 bg-slate-900/80 border border-slate-800 rounded-2xl space-y-4 max-w-lg mx-auto my-8 shadow-xl">
                   <div className="w-12 h-12 mx-auto rounded-xl bg-slate-800 flex items-center justify-center text-slate-400">
                     <Sparkles className="w-6 h-6 text-sky-400" />
                   </div>
                   <h3 className="text-base font-black uppercase text-slate-200">
-                    No games matched your filter
+                    No games matched "{searchQuery || selectedCategory}"
                   </h3>
                   <p className="text-xs text-slate-400 max-w-sm mx-auto">
-                    Try clearing your search query or switching to another category.
+                    Try searching across all 4,000+ games, or search the stealth web proxy engine.
                   </p>
-                  <div className="pt-2 flex justify-center">
+                  <div className="pt-2 flex flex-wrap items-center justify-center gap-2.5">
+                    {(selectedCategory !== 'All' || showFavoritesOnly) && (
+                      <button
+                        onClick={() => {
+                          setSelectedCategory('All');
+                          setShowFavoritesOnly(false);
+                        }}
+                        className="px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-bold transition cursor-pointer"
+                      >
+                        Search All Categories
+                      </button>
+                    )}
+                    {searchQuery && (
+                      <button
+                        onClick={() => handlePerformSearch(searchQuery)}
+                        className="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold transition cursor-pointer flex items-center gap-1.5 shadow"
+                      >
+                        <span>Search Web Proxy for "{searchQuery}"</span>
+                        <span>➔</span>
+                      </button>
+                    )}
                     <button
                       onClick={() => {
                         setSearchQuery('');
                         setSelectedCategory('All');
                         setShowFavoritesOnly(false);
                       }}
-                      className="px-4 py-2 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold uppercase tracking-wider transition cursor-pointer"
+                      className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition cursor-pointer"
                     >
                       Reset Filters
                     </button>
@@ -906,6 +1134,27 @@ export default function App() {
           </button>
           <span className="hidden md:inline text-slate-600">•</span>
           <button
+            onClick={handleOpenCloudGaming}
+            className="hover:text-sky-300 transition cursor-pointer flex items-center gap-1"
+          >
+            <span>CLOUD GAMING (ROBLOX & FORTNITE)</span>
+          </button>
+          <span className="hidden md:inline text-slate-600">•</span>
+          <button
+            onClick={() => handleOpenScpWiki()}
+            className="hover:text-amber-300 transition cursor-pointer flex items-center gap-1"
+          >
+            <span>SCP WIKI (wikidot.com)</span>
+          </button>
+          <span className="hidden md:inline text-slate-600">•</span>
+          <button
+            onClick={() => setShowPasswordsModal(true)}
+            className="hover:text-emerald-300 transition cursor-pointer flex items-center gap-1"
+          >
+            <span>3 WEEKLY PASSWORDS</span>
+          </button>
+          <span className="hidden md:inline text-slate-600">•</span>
+          <button
             onClick={() => {
               const proxy = tabs.find((t) => t.type === 'proxy');
               if (proxy) setActiveTabId(proxy.id);
@@ -919,6 +1168,15 @@ export default function App() {
           >
             <span>DUCKDUCKGO PROXY SEARCH</span>
           </button>
+          <span className="hidden md:inline text-slate-600">•</span>
+          <button
+            onClick={handleLockSite}
+            className="hover:text-amber-300 transition cursor-pointer flex items-center gap-1 text-amber-400 font-bold"
+            title="Lock the site with weekly rotating password gate"
+          >
+            <Lock className="w-3 h-3" />
+            <span>LOCK SITE</span>
+          </button>
         </div>
         <div className="flex items-center gap-2 font-mono text-[10px]">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -926,6 +1184,29 @@ export default function App() {
           <span className="sm:hidden text-emerald-400">SECURE</span>
         </div>
       </footer>
+
+      {/* Weekly Rotating Security Passwords Modal */}
+      <WeeklyPasswordsModal
+        isOpen={showPasswordsModal}
+        onClose={() => setShowPasswordsModal(false)}
+      />
+
+      {/* Persistent Client-Side Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onAuthSuccess={handleAuthSuccess}
+      />
+
+      {/* Agent User Profile & Credentials Modal */}
+      <UserProfileModal
+        isOpen={showProfileModal}
+        onClose={() => setShowProfileModal(false)}
+        currentUser={currentUser}
+        onSignOut={handleSignOut}
+        onSwitchAccount={handleSwitchAccount}
+        onUserUpdated={(updatedUser) => setCurrentUser(updatedUser)}
+      />
     </div>
   );
 }

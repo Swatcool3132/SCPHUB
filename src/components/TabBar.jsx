@@ -16,7 +16,9 @@ import {
   Lock,
   ExternalLink,
   Sparkles,
-  Bot
+  Bot,
+  Cloud,
+  BookOpen
 } from 'lucide-react';
 import { CLOAK_PROFILES } from '../data/games';
 import { ScpLogo } from './ScpLogo';
@@ -31,7 +33,8 @@ export const TabBar = ({
   onGoHome,
   onNavigateUrl,
   activeCloak,
-  setActiveCloak
+  setActiveCloak,
+  onLockSite
 }) => {
   const [omniboxValue, setOmniboxValue] = useState('');
   const [isEditingOmnibox, setIsEditingOmnibox] = useState(false);
@@ -54,6 +57,10 @@ export const TabBar = ({
         );
       } else if (activeTab.type === 'ai') {
         setOmniboxValue('scphub://ai');
+      } else if (activeTab.type === 'cloudgaming') {
+        setOmniboxValue('scphub://cloudgaming');
+      } else if (activeTab.type === 'scpwiki') {
+        setOmniboxValue('https://scp-wiki.wikidot.com/');
       } else if (activeTab.type === 'game') {
         setOmniboxValue(`game://${activeTab.game?.slug || activeTab.game?.id || 'play'}`);
       } else if (activeTab.type === 'web') {
@@ -82,14 +89,14 @@ export const TabBar = ({
 
   const handleSelectCloak = (profile) => {
     setActiveCloak(profile.id);
-    document.title = profile.title;
+    document.title = profile.tabTitle || profile.title || 'Google Classroom - Home';
     let link = document.querySelector("link[rel~='icon']");
     if (!link) {
       link = document.createElement('link');
       link.rel = 'icon';
       document.getElementsByTagName('head')[0].appendChild(link);
     }
-    link.href = profile.id === 'none' ? '/scp-logo.svg' : profile.iconUrl;
+    link.href = profile.id === 'none' ? '/vite.svg' : (profile.favicon || profile.iconUrl || 'https://ssl.gstatic.com/classroom/favicon.png');
     setShowCloakMenu(false);
   };
 
@@ -99,6 +106,12 @@ export const TabBar = ({
     }
     if (tab.type === 'arcade') {
       return <Gamepad2 className="w-4 h-4 text-sky-400 shrink-0" />;
+    }
+    if (tab.type === 'cloudgaming') {
+      return <Cloud className="w-4 h-4 text-sky-400 shrink-0" />;
+    }
+    if (tab.type === 'scpwiki') {
+      return <BookOpen className="w-4 h-4 text-amber-400 shrink-0" />;
     }
     if (tab.type === 'proxy') {
       return <span className="text-xs leading-none shrink-0">🦆</span>;
@@ -220,7 +233,7 @@ export const TabBar = ({
                   >
                     <div className="flex items-center gap-2 truncate">
                       <img
-                        src={profile.iconUrl}
+                        src={profile.favicon || profile.iconUrl}
                         alt=""
                         className="w-4 h-4 rounded-sm object-contain bg-white/10"
                         onError={(e) => {
@@ -244,6 +257,18 @@ export const TabBar = ({
           >
             {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
           </button>
+
+          {/* Quick Lock Site Button */}
+          {onLockSite && (
+            <button
+              type="button"
+              onClick={onLockSite}
+              className="p-1.5 rounded-md bg-slate-900 hover:bg-slate-800 text-amber-400/90 hover:text-amber-300 border border-slate-700 text-xs transition cursor-pointer"
+              title="Lock Site with Password Gate"
+            >
+              <Lock className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
       </div>
 
